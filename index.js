@@ -17,27 +17,27 @@ Pair.prototype = {
     this.backWs.on('message', (data) => {
       if (this.frontWs.readyState === WebSocket.OPEN) {
         this.frontWs.send(data)
+      } else {
+        this.backWs.close()
       }
+    })
+
+    this.backWs.on('close', () => {
+      setTimeout(() => {
+        this.connect(addr)
+      }, 1000)
+    })
+
+
+    this.backWs.on('error', () => {
+      setTimeout(() => {
+        this.connect(addr)
+      }, 1000)
     })
 
     this.frontWs.on('message', (data) => {
       if (this.backWs && this.backWs.readyState === WebSocket.OPEN) {
         this.backWs.send(data)
-      }
-    })
-
-    this.backWs.on('close', () => {
-      if (this.frontWs.readyState == WebSocket.OPEN) {
-        this.backWs = new WebSocket(addr)
-        return
-      }
-    })
-
-
-    this.backWs.on('error', () => {
-      if (this.frontWs.readyState == WebSocket.OPEN) {
-        this.backWs = new WebSocket(addr)
-        return
       }
     })
 
