@@ -1,0 +1,8 @@
+{
+  "name": "phoenix-proxy",
+  "version": "0.0.1",
+  "dependencies": {
+    "request": "^2.83.0",
+    "ws": "^3.3.0"
+  }
+}
