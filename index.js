@@ -38,6 +38,10 @@ var connectPulsar = function (ws, containerIp) {
     })
   })
   wsClient.on('error', function () {
+    if (ws.readyState == 1) {
+      connectPulsar(ws, containerIp)
+      return
+    }
     ws.close()
   })
   wsClient.on('close', function () {
