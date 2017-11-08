@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 var url = require('url');
 var request = require('request')
-var service = require('service.local')
+var service = require('./service.local')
 
 const wss = new WebSocket.Server({port: 8080});
 
