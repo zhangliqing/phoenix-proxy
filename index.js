@@ -15,6 +15,7 @@ wss.on('connection', function connection(ws, req) {
     for (var i = 0; i < parsedServices.data.length; i++) {
       if (parsedServices.data[i].name == serviceName) {
         var instanceId = parsedServices.data[i].instanceIds[0]
+        console.log('instanceId: '+instanceId)
         request.get({url: service.rancher.endpoint + '/containers/' + instanceId}, function (err, httpResponse, body1) {
           var parsedContainer = JSON.parse(body1)
           var containerIp = parsedContainer.primaryIpAddress
@@ -27,7 +28,11 @@ wss.on('connection', function connection(ws, req) {
               ws.send(data)
             })
           })
+          ws.on('close',function () {
+            wsClient.close()
+          })
         })
+        break
       }
     }
   })
