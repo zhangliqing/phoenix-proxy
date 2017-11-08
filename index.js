@@ -26,7 +26,7 @@ Pair.prototype = {
       }
     })
 
-    this.backWs.on('close', function() {
+    this.backWs.on('close', () => {
       if (this.frontWs.readyState == WebSocket.OPEN) {
         this.backWs = new WebSocket(addr)
         return
@@ -34,14 +34,14 @@ Pair.prototype = {
     })
 
 
-    this.backWs.on('error', function() {
+    this.backWs.on('error', () => {
       if (this.frontWs.readyState == WebSocket.OPEN) {
         this.backWs = new WebSocket(addr)
         return
       }
     })
 
-    this.frontWs.on('close', function() {
+    this.frontWs.on('close', () => {
       this.backWs.close()
     })
 
