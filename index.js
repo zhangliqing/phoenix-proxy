@@ -17,6 +17,7 @@ Pair.prototype = {
     this.backWs.on('message', (data) => {
       if (this.frontWs.readyState === WebSocket.OPEN) {
         this.frontWs.send(data)
+        delete data
       } else {
         this.backWs.close()
       }
