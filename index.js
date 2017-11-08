@@ -14,8 +14,17 @@ Pair.prototype = {
   connect: function(addr) {
     this.backWs = new WebSocket(addr)
 
-    this.backWs.on('message', this.frontWs.send)
-    this.frontWs.on('message', this.backWs.send)
+    this.backWs.on('message', (data) => {
+      if (this.frontWs.readyState === WebSocket.OPEN) {
+        this.frontWs.send(data)
+      }
+    })
+
+    this.frontWs.on('message', (data) => {
+      if (this.backWs && this.backWs.readyState === WebSocket.OPEN) {
+        this.backWs.send(data)
+      }
+    })
 
     this.backWs.on('close', function() {
       if (this.frontWs.readyState == WebSocket.OPEN) {
@@ -66,4 +75,4 @@ wss.on('connection', function connection(ws, req) {
       }
     }
   })
-});
+})
