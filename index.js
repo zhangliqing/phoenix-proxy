@@ -20,24 +20,27 @@ wss.on('connection', function connection(ws, req) {
           var parsedContainer = JSON.parse(body1)
           console.log(parsedContainer.primaryIpAddress)
           var containerIp = parsedContainer.primaryIpAddress
-          const wsClient = new WebSocket('ws://' + containerIp + ':5678');
-          wsClient.on('open', function () {
-            ws.on('message', function (message) {
-              wsClient.send(message)
-            });
-            wsClient.on('message', function (data) {
-              ws.send(data)
+          setTimeout(function () {
+            const wsClient = new WebSocket('ws://' + containerIp + ':5678');
+            wsClient.on('open', function () {
+              ws.on('message', function (message) {
+                wsClient.send(message)
+              });
+              wsClient.on('message', function (data) {
+                ws.send(data)
+              })
             })
-          })
-          wsClient.on('error',function () {
-            ws.close()
-          })
-          wsClient.on('close',function () {
-            ws.close()
-          })
-          ws.on('close',function () {
-            wsClient.close()
-          })
+            wsClient.on('error',function () {
+              ws.close()
+            })
+            wsClient.on('close',function () {
+              ws.close()
+            })
+            ws.on('close',function () {
+              wsClient.close()
+            })
+          },5000)
+
         })
         break
       }
